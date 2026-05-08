@@ -24,8 +24,6 @@ def procesar_linea(linea):
     elementos = linea.split(',')
     total = 0.0
     for elemento in elementos:
-    
-    
         total += limpiar_valor(elemento)
         
     

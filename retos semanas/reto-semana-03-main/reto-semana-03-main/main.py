@@ -3,6 +3,7 @@ import math
 
 
 def leer_transacciones():
+   
     transacciones = []
 
     for numero_linea, linea in enumerate(sys.stdin):
@@ -13,21 +14,21 @@ def leer_transacciones():
 
         columnas = linea.split(",")
 
-        if len(columnas) < 4:
+        if len(columnas) != 4:
             continue
 
-        fecha, producto, cantidad_str, precio_str = columnas[:4]
+        fecha, producto, cantidad_str, precio_str = columnas
 
         try:
-            cantidad = int(cantidad_str)
-            precio = float(precio_str)
-            if not math.isfinite(precio):
+            cantidad = int(cantidad_str.strip())
+            precio = float(precio_str.strip())
+            if not math.isfinite(precio) or not math.isfinite(float(cantidad)):
                 continue
         except ValueError:
             continue
 
         transacciones.append({
-            "producto": producto,
+            "producto": producto.strip(),
             "cantidad": cantidad,
             "precio": precio,
         })
@@ -36,31 +37,34 @@ def leer_transacciones():
 
 
 def agrupar_por_producto(transacciones):
+    
     productos = {}
 
     for t in transacciones:
         producto = t["producto"]
 
+        # Si el producto no existe en el diccionario, lo inicializamos
         if producto not in productos:
             productos[producto] = {
                 "unidades": 0,
                 "ingreso": 0.0,
             }
 
+        # Acumulamos unidades e ingreso
         productos[producto]["unidades"] += t["cantidad"]
         productos[producto]["ingreso"] += t["cantidad"] * t["precio"]
 
     return productos
 
 
-def calcular_reporte(productos):  
+def calcular_reporte(productos):
+   
     filas = []
 
     for nombre, datos in productos.items():
         unidades = datos["unidades"]
         ingreso = datos["ingreso"]
 
-        # Regla: evitar división por cero
         precio_promedio = ingreso / unidades if unidades > 0 else 0.0
 
         filas.append({
@@ -70,12 +74,16 @@ def calcular_reporte(productos):
             "precio_promedio": precio_promedio,
         })
 
-    filas_ordenadas = sorted(filas, key=lambda fila: fila["ingreso_total"], reverse=True)
+    filas_ordenadas = sorted(
+        filas,
+        key=lambda fila: (-fila["ingreso_total"], fila["producto"])
+    )
 
     return filas_ordenadas
 
 
 def imprimir_reporte(filas):
+    
     print("producto,unidades_vendidas,ingreso_total,precio_promedio")
 
     for fila in filas:

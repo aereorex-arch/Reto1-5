@@ -7,13 +7,6 @@ Este repositorio centraliza los proyectos y actividades desarrollados durante la
 
 El contenido está organizado por carpetas, cada una correspondiente a una semana de retos:
 
-*   **[Semana 1](./Semana01/)**: 
-*   **[Semana 2](./Semana02/)**: 
-*   **[Semana 3](./Semana03/)**:.
-*   **[Semana 4](./Semana04/)**: 
-*   **[Semana 5](./Semana05/)**: 
-
----
 
 ##  Tecnologías Utilizadas
 
